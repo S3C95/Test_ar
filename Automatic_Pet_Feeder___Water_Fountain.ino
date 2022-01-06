@@ -41,6 +41,7 @@ BLYNK_CONNECTED() {                                       /* When Blynk server i
 void setup() {
   Serial.begin(9600);                                     // Serial Communication is starting with 9600 of baudrate speed
   Servo1.attach(servoPin);                                // We need to attach the servo to the used pin number
+  Servo1.write(0);
   pinMode(relay_pump, OUTPUT);
   pinMode(led, OUTPUT);
   pinMode(buzzer, OUTPUT);
@@ -81,7 +82,34 @@ void loop() {
 
     startMillis = millis();                                                       /* Reset time for the next counting cycle */
   }
+  if (masa == "154013" || masa == "154513" || masa == "153513" ) { //food
+    //if (status_pos == 1) {
+      for (pos = 0; pos <= 90; pos += 1) { // goes from 0 degrees to 180 degrees
+        Servo1.write(pos); // tell servo to go to position in variable 'pos'
+        delay(15); // waits 15ms for the servo to reach the position
+      }
+      for (pos = 90; pos >= 0; pos -= 1) { // goes from 180 degrees to 0 degrees
+        Servo1.write(pos); // tell servo to go to position in variable 'pos'
+        delay(15); // waits 15ms for the servo to reach the position
+      }
+      //status_pos = 0;
+    //}
+  }
   measure();
+
+  if (distance1 >= 20 ) {
+    digitalWrite(relay_pump, HIGH);
+  }
+  else {
+    digitalWrite(relay_pump, LOW);
+  }
+
+  if (distance2 >= 20 ) {
+    digitalWrite(led, HIGH);
+  }
+  else {
+    digitalWrite(led, LOW);
+  }
 }
 
 void measure() {
@@ -110,38 +138,5 @@ void measure() {
 
   Blynk.virtualWrite(V3, distance1);
   Blynk.virtualWrite(V4, distance2);
-
-  if (masa == "154013" || masa == "154513" || masa == "153513" ) { //food
-    if (status_pos == 1) {
-
-      for (pos = 0; pos <= 90; pos += 1) { // goes from 0 degrees to 180 degrees
-        Servo1.write(pos); // tell servo to go to position in variable 'pos'
-        delay(15); // waits 15ms for the servo to reach the position
-      }
-      for (pos = 90; pos >= 0; pos -= 1) { // goes from 180 degrees to 0 degrees
-        Servo1.write(pos); // tell servo to go to position in variable 'pos'
-        delay(15); // waits 15ms for the servo to reach the position
-      }
-      status_pos = 0;
-    }
-  }
-  else {
-    status_pos = 1;
-  }
-
-  if (distance1 >= 20 ) {
-    digitalWrite(relay_pump, HIGH);
-  }
-
-  else {
-    digitalWrite(relay_pump, LOW);
-  }
-
-  if (distance2 >= 20 ) {
-    digitalWrite(led, HIGH);
-  }
-
-  else {
-    digitalWrite(led, LOW);
-  }
+  return;  
 }
