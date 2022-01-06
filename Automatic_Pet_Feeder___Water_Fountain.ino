@@ -31,7 +31,7 @@ uint8_t trig1 = D2;
 uint8_t trig2 = D8;
 uint8_t buzzer = D1;     //D4
 uint8_t led = D5;       //D5
-uint8_t servoPin = D6;  //D6                                      // Declare the Servo pin
+uint8_t servoPin = 12;  //D6                                      // Declare the Servo pin
 uint8_t relay_pump = D7; // GPIO13 D7
 
 BLYNK_CONNECTED() {                                       /* When Blynk server is connected, initiate Real Time Clock function */
@@ -82,8 +82,8 @@ void loop() {
 
     startMillis = millis();                                                       /* Reset time for the next counting cycle */
   }
+  
   if (masa == "154013" || masa == "154513" || masa == "153513" ) { //food
-    //if (status_pos == 1) {
       for (pos = 0; pos <= 90; pos += 1) { // goes from 0 degrees to 180 degrees
         Servo1.write(pos); // tell servo to go to position in variable 'pos'
         delay(15); // waits 15ms for the servo to reach the position
@@ -92,8 +92,6 @@ void loop() {
         Servo1.write(pos); // tell servo to go to position in variable 'pos'
         delay(15); // waits 15ms for the servo to reach the position
       }
-      //status_pos = 0;
-    //}
   }
   measure();
 
