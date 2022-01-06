@@ -1,6 +1,6 @@
 #define BLYNK_PRINT Serial
 #include <ESP8266WiFi.h>                                /* Enable the use of wifi module. Make sure you downloaded and installed the ESP8266 library*/
-#include <BlynkSimpleEsp8266.h>                         /* Code for talking with Blynk*/aaaaaa
+#include <BlynkSimpleEsp8266.h>                         /* Code for talking with Blynk*/
 #include <Servo.h>
 #include <TimeLib.h>                                    /* Program code related to Real Time Clock (RTC). */
 #include <WidgetRTC.h>                                  /* Communication code with Blynk Real Time Clock Widget */
@@ -82,22 +82,30 @@ void loop() {
 
     startMillis = millis();                                                       /* Reset time for the next counting cycle */
   }
-  
+
   if (masa == "235613" || masa == "235813" || masa == "235913" ) { //food
     Serial.println("START ROLL ");
-      for (pos = 0; pos <= 90; pos += 1) { // goes from 0 degrees to 180 degrees
-        Servo1.write(pos); // tell servo to go to position in variable 'pos'
-        delay(15); // waits 15ms for the servo to reach the position
-        Serial.print("START = ");
-        Serial.println(pos);
+    /*for (pos = 0; pos <= 90; pos += 1) { // goes from 0 degrees to 180 degrees
+      Servo1.write(pos); // tell servo to go to position in variable 'pos'
+      delay(15); // waits 15ms for the servo to reach the position
+      Serial.print("START = ");
+      Serial.println(pos);
       }
       for (pos = 90; pos >= 0; pos -= 1) { // goes from 180 degrees to 0 degrees
-        Servo1.write(pos); // tell servo to go to position in variable 'pos'
-        delay(15); // waits 15ms for the servo to reach the position
-        Serial.print("START = ");
-        Serial.println(pos);
-      }
-      Serial.println("END ROLL ");
+      Servo1.write(pos); // tell servo to go to position in variable 'pos'
+      delay(15); // waits 15ms for the servo to reach the position
+      Serial.print("START = ");
+      Serial.println(pos);
+      }*/
+    Servo1.write(90);
+    delay(1000);
+    Servo1.write(0);
+    delay(1000);
+    Servo1.write(90);
+    delay(1000);
+    Servo1.write(0);
+    delay(1000);
+    Serial.println("END ROLL ");
   }
   measure();
 
@@ -142,5 +150,5 @@ void measure() {
 
   Blynk.virtualWrite(V3, distance1);
   Blynk.virtualWrite(V4, distance2);
-  return;  
+  return;
 }
