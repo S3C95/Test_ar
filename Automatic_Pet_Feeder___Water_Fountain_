@@ -23,6 +23,7 @@ int distance2;
 int pos = 0;
 String masa = "";
 int status_pos = 1;
+int status_refill = 1;
 
 //pin declare
 uint8_t echo1 = D0;
@@ -97,6 +98,7 @@ void loop() {
       }
       looping++;
     } while (looping < 2);
+
   }
   measure();
 
@@ -109,6 +111,13 @@ void loop() {
 
   if (distance2 >= 20 ) {
     digitalWrite(led, HIGH);
+    if (status_refill == 1) {
+      status_refill = 0;
+      Blynk.tweet("Hey, Please Refill My Food");
+    }
+    else {
+      status_refill = 1;
+    }
   }
   else {
     digitalWrite(led, LOW);
