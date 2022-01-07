@@ -113,7 +113,7 @@ void loop() {
     digitalWrite(led, HIGH);
     if (status_refill == 1) {
       status_refill = 0;
-      Blynk.tweet("Hey, Please Refill My Food");
+      Blynk.notify("Hey, Please Refill My Food");
     }
     else {
       status_refill = 1;
