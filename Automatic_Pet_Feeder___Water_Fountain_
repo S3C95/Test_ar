@@ -85,60 +85,61 @@ void loop() {
   }
 
   if (masa == "xxxx" || masa == "xxx" || masa == "xxxx" ) { //food
-    Serial.println("START ROLL ");
-    for (pos = 0; pos <= 180; pos += 1) { // goes from 0 degrees to 180 degrees
-      Servo1.write(pos); // tell servo to go to position in variable 'pos'
-      delay(15); // waits 15ms for the servo to reach the position
+    int looping = 0;
+    do {
+      for (pos = 0; pos <= 180; pos += 1) { // goes from 0 degrees to 180 degrees
+        Servo1.write(pos); // tell servo to go to position in variable 'pos'
+        delay(10); // waits 15ms for the servo to reach the position
       }
       for (pos = 180; pos >= 0; pos -= 1) { // goes from 180 degrees to 0 degrees
-      Servo1.write(pos); // tell servo to go to position in variable 'pos'
-      delay(15); // waits 15ms for the servo to reach the position
-      }*/
-  
-    Serial.println("END ROLL ");
+        Servo1.write(pos); // tell servo to go to position in variable 'pos'
+        delay(10); // waits 15ms for the servo to reach the position
+      }
+      looping++;
+    } while (looping <= 2);
   }
-  measure();
+    measure();
 
-  if (distance1 >= 20 ) {
-    digitalWrite(relay_pump, HIGH);
+    if (distance1 >= 20 ) {
+      digitalWrite(relay_pump, HIGH);
+    }
+    else {
+      digitalWrite(relay_pump, LOW);
+    }
+
+    if (distance2 >= 20 ) {
+      digitalWrite(led, HIGH);
+    }
+    else {
+      digitalWrite(led, LOW);
+    }
   }
-  else {
-    digitalWrite(relay_pump, LOW);
+
+  void measure() {
+    digitalWrite(trig1, LOW);
+    delayMicroseconds(2);
+    digitalWrite(trig1, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(trig1, LOW);
+    duration1 = pulseIn(echo1, HIGH);
+    distance1 = duration1 * 0.034 / 2;
+
+    digitalWrite(trig2, LOW);
+    delayMicroseconds(2);
+    digitalWrite(trig2, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(trig2, LOW);
+    duration2 = pulseIn(echo2, HIGH);
+    distance2 = duration2 * 0.034 / 2; // Speed of sound wave divided by 2 (go and back)
+
+    Serial.print("Distance_1: ");
+    Serial.print(distance1);
+    Serial.println(" cm");
+    Serial.print("Distance_2: ");
+    Serial.print(distance2);
+    Serial.println(" cm");
+
+    Blynk.virtualWrite(V3, distance1);
+    Blynk.virtualWrite(V4, distance2);
+    return;
   }
-
-  if (distance2 >= 20 ) {
-    digitalWrite(led, HIGH);
-  }
-  else {
-    digitalWrite(led, LOW);
-  }
-}
-
-void measure() {
-  digitalWrite(trig1, LOW);
-  delayMicroseconds(2);
-  digitalWrite(trig1, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(trig1, LOW);
-  duration1 = pulseIn(echo1, HIGH);
-  distance1 = duration1 * 0.034 / 2;
-
-  digitalWrite(trig2, LOW);
-  delayMicroseconds(2);
-  digitalWrite(trig2, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(trig2, LOW);
-  duration2 = pulseIn(echo2, HIGH);
-  distance2 = duration2 * 0.034 / 2; // Speed of sound wave divided by 2 (go and back)
-
-  Serial.print("Distance_1: ");
-  Serial.print(distance1);
-  Serial.println(" cm");
-  Serial.print("Distance_2: ");
-  Serial.print(distance2);
-  Serial.println(" cm");
-
-  Blynk.virtualWrite(V3, distance1);
-  Blynk.virtualWrite(V4, distance2);
-  return;
-}
